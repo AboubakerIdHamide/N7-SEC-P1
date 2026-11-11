@@ -11,6 +11,7 @@ from PIL import Image as PILImage
 from xml.sax.saxutils import escape
 ROOT=Path(__file__).resolve().parents[1];DOC=ROOT/'docs';OUT=ROOT/'output/pdf';OUT.mkdir(parents=True,exist_ok=True)
 INK=colors.HexColor('#173A3E');TEAL=colors.HexColor('#18796E');GRAY=colors.HexColor('#60777D');PALE=colors.HexColor('#EDF5F2')
+SCHOOL=ROOT.parents[2]
 def box(d,x,y,w,h,title,lines):
  d.add(Rect(x,y,w,h,rx=8,fillColor=colors.white,strokeColor=colors.HexColor('#C9DAD7')))
  d.add(Rect(x,y+h-34,w,34,fillColor=INK,strokeColor=INK))
@@ -65,16 +66,23 @@ def shot(name,caption,maxh=280):
  path=DOC/'screenshots'/name
  if not path.exists():return
  w,h=PILImage.open(path).size;ratio=min(490/w,maxh/h);story.append(Image(str(path),w*ratio,h*ratio));p(caption,'SmallCustom')
-p('SECURITE DES SYSTEMES DISTRIBUES','LabelCustom')
-p('Incident Desk','TitleCustom');p('Authentification et autorisation<br/>Spring Security, JWT et React','SectionCustom')
-p('Rapport technique - version du 11 novembre 2026','SmallCustom')
-story.append(Spacer(1,18))
-p('Une application de declaration et de suivi des incidents informatiques, avec des droits differents pour les employes, techniciens et administrateurs.')
-table([['Perimetre','Resultat'],['Backend','Spring Boot 3.4.2, Spring Security, JPA, H2, JJWT 0.13.0'],['Frontend','React, Vite, React Router, Axios'],['Verification executee','40 controles HTTP reussis + verification de l\'interface dans le navigateur'],['Documents','README, diagrammes, collection Postman, guide de demonstration, captures de l\'application'],['Evidence a completer','Les neuf captures dans l\'interface native Postman restent a prendre.']], [125,365])
-h('Objectif pedagogique')
-p('Distinguer l\'authentification (identifier un utilisateur), l\'autorisation par role (autoriser une action) et le controle des donnees (verifier le proprietaire ou le technicien affecte). Une route React masquee ne suffit pas : toute requete est controlee par le backend.')
-p('Le projet reprend les notions de l\'atelier TP2. Le code, les tests et ce rapport doivent etre compris et presentes par l\'etudiant. Aucun resultat Postman ni aucune capture de cet outil ne sont inventes.','SmallCustom')
-new();h('1. Architecture generale');diagram(architecture)
+story.append(Spacer(1,8))
+logo_left=Image(str(SCHOOL/'logo.png'),width=300,height=80,kind='proportional')
+logo_right=Image(str(SCHOOL/'Logo_UHIIC.png'),width=100,height=100,kind='proportional')
+logos=Table([[logo_left,logo_right]],colWidths=[365,125],rowHeights=[104],hAlign='CENTER')
+logos.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'MIDDLE'),('ALIGN',(0,0),(-1,-1),'CENTER'),('LEFTPADDING',(0,0),(-1,-1),6),('RIGHTPADDING',(0,0),(-1,-1),6),('BOTTOMPADDING',(0,0),(-1,-1),8)]));story.append(logos)
+story.append(Spacer(1,12))
+p('SÉCURITÉ DES SYSTÈMES DISTRIBUÉS','LabelCustom')
+p('COMPTE RENDU','TitleCustom');p('Projet Incident Desk<br/>Authentification et autorisation avec Spring Security, JWT et React','SectionCustom')
+p('Établissement : ENSET Mohammedia — Université Hassan II de Casablanca<br/>Formation : Master Systèmes Distribués et Intelligence Artificielle (SDIA)','BodyCustom')
+table([['Information',''],['Étudiant','Id Hamide Aboubaker'],['Module','Sécurité des systèmes distribués'],['Année universitaire','2026–2027'],['Date','11 novembre 2026']], [145,345])
+story.append(Spacer(1,10))
+p('Une application web de déclaration et de suivi des incidents informatiques, avec des droits différenciés pour les employés, techniciens et administrateurs.')
+table([['Périmètre','Résultat'],['Backend','Spring Boot 3.4.2, Spring Security, JPA, H2, JJWT 0.13.0'],['Frontend','React, Vite, React Router, Axios'],['Vérification exécutée','40 contrôles HTTP réussis et vérification de l’interface dans le navigateur'],['Livrables','Projets backend et frontend, README, diagrammes, collection Postman, neuf captures Postman, captures de l’application et présent compte rendu']], [125,365])
+new();h('Objectif pédagogique')
+p('Distinguer l’authentification (identifier un utilisateur), l’autorisation par rôle (autoriser une action) et le contrôle des données (vérifier le propriétaire ou le technicien affecté). Une route React masquée ne suffit pas : toute requête est contrôlée par le backend.')
+p('Le projet reprend les notions étudiées dans l’atelier JWT. Le code, les tests et les observations documentés sont issus de l’application exécutée et des captures fournies.','SmallCustom')
+h('1. Architecture générale');diagram(architecture)
 p('React envoie le JWT dans l\'entete Authorization. Le filtre valide sa signature et son expiration, charge le compte et construit l\'authentification. Les controles de role et de propriete precedent toute lecture ou modification sensible.')
 p('Le backend utilise SessionCreationPolicy.STATELESS : il ne depend pas d\'une session HTTP pour authentifier les requetes. La base conserve les comptes, incidents, notes et evenements. CORS autorise localhost:5173 et 127.0.0.1:5173.')
 p('Les DTO evitent d\'exposer le hash du mot de passe. La validation utilise @NotBlank, @Email, @Size, @NotNull et @Valid. Un @RestControllerAdvice traduit les erreurs applicatives en JSON ; les erreurs du filtre de securite ont des gestionnaires 401/403 dedies.')
@@ -97,7 +105,7 @@ p(f'<b>{len(results)}/{len(results)} controles HTTP reussis.</b> Le fichier docs
 p('Le cas du JWT expire utilise un token correctement signe avec la cle de demonstration et une date exp dans le passe. Il teste donc l\'expiration, et non simplement une signature invalide.')
 p('Controles supplementaires : JWT d\'un utilisateur desactive, employe tentant une affectation, refus de modifier CLOSED, incident inexistant, inscription avec role ADMIN, confirmation/ancien mot de passe, mise a jour du profil et nouveau token.')
 table([['Statut','Interpretation'],['400','Donnees manquantes, invalides ou incoherentes.'],['401','Authentification absente, invalide, expiree ou compte desactive.'],['403','Utilisateur authentifie mais sans autorisation.'],['404','Ressource introuvable.'],['409','Email deja utilise ou conflit avec l\'etat CLOSED.']], [80,410])
-p('<b>Postman :</b> la collection est fournie et automatise les tokens, les identifiants et les assertions. Son execution native et les neuf captures sont a finaliser selon docs/POSTMAN-CAPTURES.md. Les resultats ci-dessus proviennent du script HTTP, pas de captures Postman.','SmallCustom')
+p('<b>Postman :</b> les neuf scénarios obligatoires ont été exécutés dans Postman et leurs réponses sont reproduites dans les pages de preuves qui suivent. Les contrôles supplémentaires du jeu de 40 proviennent du script HTTP reproductible.','SmallCustom')
 new();h('5. Scenario fonctionnel et interface')
 p('Le scenario HTTP cree deux incidents pour le premier employe et un pour le second. Il verifie l\'isolation, affecte un incident via ADMIN, passe de ASSIGNED a IN_PROGRESS puis RESOLVED, ajoute une note et verifie que le proprietaire retrouve le nouvel etat et l\'historique.')
 shot('07-technician-desktop.jpg','Figure 1. Dashboard du technicien : incidents affectes et compteurs adaptes au role.',285)
@@ -115,12 +123,30 @@ new();h('7. Execution, demonstration et limites')
 p('<b>Lancement :</b> bash start-backend.sh puis bash start-frontend.sh, dans deux terminaux. Ouvrir http://127.0.0.1:5173. Le backend utilise 8080. Les quatre comptes initiaux utilisent Demo1234! : employee1@demo.test, employee2@demo.test, tech@demo.test et admin@demo.test.')
 p('<b>Demonstration :</b> employe cree un incident ; administrateur l\'affecte ; technicien ajoute une note et le resout ; employe consulte l\'historique. Montrer ensuite les refus 401 et 403 dans Postman. Le guide docs/DEMO-5-MINUTES.md detaille cette sequence.')
 p('<b>Limites explicites :</b> cle JWT et comptes connus pour la demonstration, console H2 publique selon le sujet, aucun refresh token. Un changement de mot de passe ne revoque pas les JWT deja emis ; ils restent limites par leur expiration. Un compte desactive est bloque immediatement. La deconnexion efface sessionStorage. La session navigateur reste exposee a une eventuelle faille XSS : cette application est une demonstration locale, pas un deploiement de production.')
-p('<b>Livrables :</b> projets backend et frontend ; README ; present rapport ; diagrammes SVG et sources Mermaid ; captures de l\'application ; collection Postman et resultats HTTP ; guide de demonstration. Les captures natives Postman et la demonstration devant le professeur restent a effectuer.')
+p('<b>Livrables :</b> projets backend et frontend ; README ; présent rapport ; diagrammes SVG et sources Mermaid ; captures de l’application ; collection Postman et résultats HTTP ; neuf captures de tests Postman ; guide de démonstration. La démonstration fonctionnelle devant le professeur constitue l’étape orale de remise.')
 h('References techniques')
 refs=[('Spring Security - method security','https://docs.spring.io/spring-security/reference/servlet/authorization/method-security.html'),('JJWT - claims, signature et parsing','https://github.com/jwtk/jjwt'),('Axios - interceptors','https://axios-http.com/docs/interceptors'),('Jakarta Persistence - ManyToOne','https://jakarta.ee/specifications/persistence/3.0/apidocs/jakarta.persistence/jakarta/persistence/manytoone/')]
 for label,url in refs:p(f'<a href="{url}" color="#18796E">{escape(label)}</a>','SmallCustom')
-p('Sujet de reference : devoir_jwt_spring_security_react.pdf, sections 1-27. Le code et les observations locales sont la source des resultats annonces.','SmallCustom')
+p('Sujet de référence : devoir_jwt_spring_security_react.pdf, sections 1–27. Le code et les observations locales sont la source des résultats annoncés.','SmallCustom')
+new();h('8. Preuves des tests Postman')
+p('Chaque capture présente la requête numérotée, le statut HTTP obtenu et la réponse du serveur. Le test 07 a été exécuté après désactivation de l’employé 2 ; la réponse 401 confirme que le compte désactivé ne peut pas ouvrir de session.','BodyCustom')
+postman=[
+ ('01-no-jwt.png','01 — Accès sans JWT : 401 Unauthorized.'),
+ ('02-invalid-jwt.png','02 — JWT invalide : 401 Unauthorized.'),
+ ('03-expired-jwt.png','03 — JWT signé mais expiré : 401 Unauthorized.'),
+ ('04-employee-admin-forbidden.png','04 — Route ADMIN appelée par un employé : 403 Forbidden.'),
+ ('05-other-owner-forbidden.png','05 — Incident appartenant à un autre employé : 403 Forbidden.'),
+ ('06-unassigned-technician-forbidden.png','06 — Technicien non affecté tentant de modifier un incident : 403 Forbidden.'),
+ ('07-disabled-login.png','07 — Connexion d’un compte désactivé : 401 Unauthorized.'),
+ ('08-duplicate-email.png','08 — Inscription avec une adresse déjà utilisée : 409 Conflict.'),
+ ('09-invalid-incident-data.png','09 — Création d’un incident avec des champs invalides : 400 Bad Request.'),
+]
+for i,(filename,caption) in enumerate(postman):
+ path=DOC/'screenshots'/'postman'/filename
+ w,h=PILImage.open(path).size;ratio=min(490/w,275/h)
+ story.append(Image(str(path),w*ratio,h*ratio));p(caption,'SmallCustom')
+ if i%2==1 and i<len(postman)-1:new()
 def footer(canvas,doc):
- canvas.setStrokeColor(colors.HexColor('#DBE6E3'));canvas.line(48,43,547,43);canvas.setFont('Helvetica',8);canvas.setFillColor(GRAY);canvas.drawString(48,29,'Incident Desk | Spring Security - JWT - React');canvas.drawRightString(547,29,str(doc.page))
-SimpleDocTemplate(str(OUT/'rapport-incident-desk.pdf'),pagesize=(595.28,841.89),rightMargin=50,leftMargin=50,topMargin=42,bottomMargin=58,title='Incident Desk - Rapport technique',author='Projet de securite des systemes distribues').build(story,onFirstPage=footer,onLaterPages=footer)
+ canvas.setStrokeColor(colors.HexColor('#DBE6E3'));canvas.line(48,43,547,43);canvas.setFont('Helvetica',8);canvas.setFillColor(GRAY);canvas.drawString(48,29,'Id Hamide Aboubaker | SDIA — Incident Desk');canvas.drawRightString(547,29,str(doc.page))
+SimpleDocTemplate(str(OUT/'rapport-incident-desk.pdf'),pagesize=(595.28,841.89),rightMargin=50,leftMargin=50,topMargin=42,bottomMargin=58,title='Compte rendu - Incident Desk - Sécurité des systèmes distribués',author='Id Hamide Aboubaker').build(story,onFirstPage=footer,onLaterPages=footer)
 print('Report and diagrams generated.')
