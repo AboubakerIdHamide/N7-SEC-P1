@@ -1,0 +1,782 @@
+{
+  "info": {
+    "name": "Incident Desk - Security and workflow",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Run all requests in order. Demo-only credentials. Numbered 01-09 requests correspond to the mandatory security tests. The expired JWT is a correctly signed, already expired demo fixture. Refresh login requests when testing manually for longer than five minutes."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8080"
+    },
+    {
+      "key": "expiredToken",
+      "value": "eyJhbGciOiAiSFMyNTYiLCAidHlwIjogIkpXVCJ9.eyJzdWIiOiAiZW1wbG95ZWUxQGRlbW8udGVzdCIsICJyb2xlIjogIkVNUExPWUVFIiwgImlhdCI6IDE3OTQzNDk3ODMsICJleHAiOiAxNzk0MzUwMDgzfQ.6YNDUEe0-psytlPt_-0XO6BPQefWbKwTjuh9QJxUqM8"
+    }
+  ],
+  "item": [
+    {
+      "name": "Setup - Login Admin",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "description": "Expected HTTP 200. Run the collection in order to prepare tokens and incident IDs.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"admin@demo.test\",\n  \"password\": \"Demo1234!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set(\"adminToken\",pm.response.json().token);pm.collectionVariables.set(\"adminId\",pm.response.json().user.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Setup - Login Employee 1",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "description": "Expected HTTP 200. Run the collection in order to prepare tokens and incident IDs.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"employee1@demo.test\",\n  \"password\": \"Demo1234!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set(\"employeeToken\",pm.response.json().token);pm.collectionVariables.set(\"employeeId\",pm.response.json().user.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Setup - Login Employee 2",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "description": "Expected HTTP 200. Run the collection in order to prepare tokens and incident IDs.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"employee2@demo.test\",\n  \"password\": \"Demo1234!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set(\"otherToken\",pm.response.json().token);pm.collectionVariables.set(\"otherId\",pm.response.json().user.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Setup - Login Technician",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "description": "Expected HTTP 200. Run the collection in order to prepare tokens and incident IDs.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"tech@demo.test\",\n  \"password\": \"Demo1234!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.collectionVariables.set(\"techToken\",pm.response.json().token);pm.collectionVariables.set(\"techId\",pm.response.json().user.id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Setup - Employee incident",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{employeeToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/incidents",
+        "description": "Expected HTTP 201. Run the collection in order to prepare tokens and incident IDs.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Employee incident\",\n  \"description\": \"Security test fixture created by the Postman collection.\",\n  \"category\": \"PHISHING\",\n  \"priority\": \"HIGH\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "pm.collectionVariables.set(\"incidentId\",pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Setup - Other employee incident",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{otherToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/incidents",
+        "description": "Expected HTTP 201. Run the collection in order to prepare tokens and incident IDs.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Other employee incident\",\n  \"description\": \"Security test fixture created by the Postman collection.\",\n  \"category\": \"PHISHING\",\n  \"priority\": \"HIGH\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));",
+              "pm.collectionVariables.set(\"otherIncidentId\",pm.response.json().id);"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "01 - No JWT",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/api/profile",
+        "description": "Expected HTTP 401. Run the collection in order to prepare tokens and incident IDs."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 - Invalid JWT",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer invalid.token.value"
+          }
+        ],
+        "url": "{{baseUrl}}/api/profile",
+        "description": "Expected HTTP 401. Run the collection in order to prepare tokens and incident IDs."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 - Expired signed JWT",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{expiredToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/profile",
+        "description": "Expected HTTP 401. Run the collection in order to prepare tokens and incident IDs."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "04 - Employee accessing ADMIN route",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{employeeToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/admin/users",
+        "description": "Expected HTTP 403. Run the collection in order to prepare tokens and incident IDs."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "05 - Employee accessing another owner incident",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{employeeToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/incidents/{{otherIncidentId}}",
+        "description": "Expected HTTP 403. Run the collection in order to prepare tokens and incident IDs."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 - Technician updating unassigned incident",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{techToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/incidents/{{otherIncidentId}}/status",
+        "description": "Expected HTTP 403. Run the collection in order to prepare tokens and incident IDs.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"IN_PROGRESS\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 403\", () => pm.response.to.have.status(403));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Setup - Disable employee 2",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/admin/users/{{otherId}}/disable",
+        "description": "Expected HTTP 200. Run the collection in order to prepare tokens and incident IDs."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 - Disabled user login",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/login",
+        "description": "Expected HTTP 401. Run the collection in order to prepare tokens and incident IDs.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"employee2@demo.test\",\n  \"password\": \"Demo1234!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 401\", () => pm.response.to.have.status(401));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Cleanup - Reenable employee 2",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/admin/users/{{otherId}}/enable",
+        "description": "Expected HTTP 200. Run the collection in order to prepare tokens and incident IDs."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 - Duplicate email registration",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": "{{baseUrl}}/auth/register",
+        "description": "Expected HTTP 409. Run the collection in order to prepare tokens and incident IDs.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fullName\": \"Duplicate\",\n  \"email\": \"employee1@demo.test\",\n  \"password\": \"Demo1234!\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 409\", () => pm.response.to.have.status(409));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "09 - Invalid incident data",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{employeeToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/incidents",
+        "description": "Expected HTTP 400. Run the collection in order to prepare tokens and incident IDs.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"\",\n  \"description\": \"\",\n  \"category\": \"PHISHING\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 400\", () => pm.response.to.have.status(400));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workflow - Admin assignment",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{adminToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/incidents/{{incidentId}}/assign/{{techId}}",
+        "description": "Expected HTTP 200. Run the collection in order to prepare tokens and incident IDs."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workflow - Technician assigned list",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{techToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/incidents/assigned",
+        "description": "Expected HTTP 200. Run the collection in order to prepare tokens and incident IDs."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workflow - Start treatment",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{techToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/incidents/{{incidentId}}/status",
+        "description": "Expected HTTP 200. Run the collection in order to prepare tokens and incident IDs.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"IN_PROGRESS\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workflow - Treatment note",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{techToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/incidents/{{incidentId}}/comments",
+        "description": "Expected HTTP 201. Run the collection in order to prepare tokens and incident IDs.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"content\": \"Poste isole. Analyse antivirus effectuee.\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 201\", () => pm.response.to.have.status(201));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workflow - Resolve",
+      "request": {
+        "method": "PUT",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{techToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/incidents/{{incidentId}}/status",
+        "description": "Expected HTTP 200. Run the collection in order to prepare tokens and incident IDs.",
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"RESOLVED\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workflow - Owner history",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{employeeToken}}"
+          }
+        ],
+        "url": "{{baseUrl}}/api/incidents/{{incidentId}}",
+        "description": "Expected HTTP 200. Run the collection in order to prepare tokens and incident IDs."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"HTTP 200\", () => pm.response.to.have.status(200));",
+              "pm.test(\"Resolved and history present\",()=>{const d=pm.response.json();pm.expect(d.incident.status).to.eql(\"RESOLVED\");pm.expect(d.history.length).to.be.at.least(5);});"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

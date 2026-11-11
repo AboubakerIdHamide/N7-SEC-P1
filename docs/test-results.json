@@ -1,0 +1,1092 @@
+[
+  {
+    "name": "Login admin@demo.test",
+    "method": "POST",
+    "path": "/auth/login",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "message": "Token received (redacted)"
+    }
+  },
+  {
+    "name": "Login employee1@demo.test",
+    "method": "POST",
+    "path": "/auth/login",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "message": "Token received (redacted)"
+    }
+  },
+  {
+    "name": "Login employee2@demo.test",
+    "method": "POST",
+    "path": "/auth/login",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "message": "Token received (redacted)"
+    }
+  },
+  {
+    "name": "Login tech@demo.test",
+    "method": "POST",
+    "path": "/auth/login",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "message": "Token received (redacted)"
+    }
+  },
+  {
+    "name": "01 No JWT",
+    "method": "GET",
+    "path": "/api/profile",
+    "expected": 401,
+    "actual": 401,
+    "pass": true,
+    "response": {
+      "status": 401,
+      "message": "Authentication required or token expired"
+    }
+  },
+  {
+    "name": "02 Invalid JWT",
+    "method": "GET",
+    "path": "/api/profile",
+    "expected": 401,
+    "actual": 401,
+    "pass": true,
+    "response": {
+      "status": 401,
+      "message": "Authentication required or token expired"
+    }
+  },
+  {
+    "name": "03 Expired correctly signed JWT",
+    "method": "GET",
+    "path": "/api/profile",
+    "expected": 401,
+    "actual": 401,
+    "pass": true,
+    "response": {
+      "status": 401,
+      "message": "Authentication required or token expired"
+    }
+  },
+  {
+    "name": "04 Employee admin route",
+    "method": "GET",
+    "path": "/api/admin/users",
+    "expected": 403,
+    "actual": 403,
+    "pass": true,
+    "response": {
+      "status": 403,
+      "message": "Access forbidden"
+    }
+  },
+  {
+    "name": "Create Suspicious phishing email",
+    "method": "POST",
+    "path": "/api/incidents",
+    "expected": 201,
+    "actual": 201,
+    "pass": true,
+    "response": {
+      "id": 36,
+      "title": "Suspicious phishing email",
+      "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+      "category": "PHISHING",
+      "priority": "CRITICAL",
+      "status": "OPEN",
+      "createdAt": "2026-11-11T21:42:11.150069197Z",
+      "updatedAt": "2026-11-11T21:42:11.185255620Z",
+      "createdBy": {
+        "id": 1,
+        "fullName": "Employee One",
+        "email": "employee1@demo.test",
+        "role": "EMPLOYEE",
+        "enabled": true,
+        "createdAt": "2026-11-10T22:36:05.854714Z"
+      },
+      "assignedTo": null
+    }
+  },
+  {
+    "name": "Create Office Wi-Fi connection failure",
+    "method": "POST",
+    "path": "/api/incidents",
+    "expected": 201,
+    "actual": 201,
+    "pass": true,
+    "response": {
+      "id": 37,
+      "title": "Office Wi-Fi connection failure",
+      "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+      "category": "NETWORK",
+      "priority": "MEDIUM",
+      "status": "OPEN",
+      "createdAt": "2026-11-11T21:42:11.220660543Z",
+      "updatedAt": "2026-11-11T21:42:11.223119203Z",
+      "createdBy": {
+        "id": 1,
+        "fullName": "Employee One",
+        "email": "employee1@demo.test",
+        "role": "EMPLOYEE",
+        "enabled": true,
+        "createdAt": "2026-11-10T22:36:05.854714Z"
+      },
+      "assignedTo": null
+    }
+  },
+  {
+    "name": "Create Account access blocked",
+    "method": "POST",
+    "path": "/api/incidents",
+    "expected": 201,
+    "actual": 201,
+    "pass": true,
+    "response": {
+      "id": 38,
+      "title": "Account access blocked",
+      "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+      "category": "ACCESS",
+      "priority": "HIGH",
+      "status": "OPEN",
+      "createdAt": "2026-11-11T21:42:11.236726584Z",
+      "updatedAt": "2026-11-11T21:42:11.238612759Z",
+      "createdBy": {
+        "id": 2,
+        "fullName": "Employee Two",
+        "email": "employee2@demo.test",
+        "role": "EMPLOYEE",
+        "enabled": true,
+        "createdAt": "2026-11-10T22:36:05.995895Z"
+      },
+      "assignedTo": null
+    }
+  },
+  {
+    "name": "05 Other employee incident",
+    "method": "GET",
+    "path": "/api/incidents/38",
+    "expected": 403,
+    "actual": 403,
+    "pass": true,
+    "response": {
+      "status": 403,
+      "message": "This incident is not accessible to you"
+    }
+  },
+  {
+    "name": "06 Unassigned technician update",
+    "method": "PUT",
+    "path": "/api/incidents/38/status",
+    "expected": 403,
+    "actual": 403,
+    "pass": true,
+    "response": {
+      "status": 403,
+      "message": "Only the assigned technician or an administrator may update this incident"
+    }
+  },
+  {
+    "name": "Disable employee 2",
+    "method": "PUT",
+    "path": "/api/admin/users/2/disable",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "id": 2,
+      "fullName": "Employee Two",
+      "email": "employee2@demo.test",
+      "role": "EMPLOYEE",
+      "enabled": false,
+      "createdAt": "2026-11-10T22:36:05.995895Z"
+    }
+  },
+  {
+    "name": "07 Disabled login",
+    "method": "POST",
+    "path": "/auth/login",
+    "expected": 401,
+    "actual": 401,
+    "pass": true,
+    "response": {
+      "status": 401,
+      "message": "Invalid credentials or disabled account"
+    }
+  },
+  {
+    "name": "Disabled existing JWT",
+    "method": "GET",
+    "path": "/api/profile",
+    "expected": 401,
+    "actual": 401,
+    "pass": true,
+    "response": {
+      "status": 401,
+      "message": "Authentication required or token expired"
+    }
+  },
+  {
+    "name": "Reenable employee 2",
+    "method": "PUT",
+    "path": "/api/admin/users/2/enable",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "id": 2,
+      "fullName": "Employee Two",
+      "email": "employee2@demo.test",
+      "role": "EMPLOYEE",
+      "enabled": true,
+      "createdAt": "2026-11-10T22:36:05.995895Z"
+    }
+  },
+  {
+    "name": "08 Duplicate email",
+    "method": "POST",
+    "path": "/auth/register",
+    "expected": 409,
+    "actual": 409,
+    "pass": true,
+    "response": {
+      "status": 409,
+      "message": "Email already used"
+    }
+  },
+  {
+    "name": "09 Invalid incident data",
+    "method": "POST",
+    "path": "/api/incidents",
+    "expected": 400,
+    "actual": 400,
+    "pass": true,
+    "response": {
+      "errors": [
+        "priority: must not be null",
+        "description: must not be blank",
+        "title: must not be blank"
+      ],
+      "status": 400,
+      "message": "Invalid input"
+    }
+  },
+  {
+    "name": "Admin list",
+    "method": "GET",
+    "path": "/api/incidents",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": [
+      {
+        "id": 38,
+        "title": "Account access blocked",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "ACCESS",
+        "priority": "HIGH",
+        "status": "OPEN",
+        "createdAt": "2026-11-11T21:42:11.236727Z",
+        "updatedAt": "2026-11-11T21:42:11.238613Z",
+        "createdBy": {
+          "id": 2,
+          "fullName": "Employee Two",
+          "email": "employee2@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.995895Z"
+        },
+        "assignedTo": null
+      },
+      {
+        "id": 37,
+        "title": "Office Wi-Fi connection failure",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "NETWORK",
+        "priority": "MEDIUM",
+        "status": "OPEN",
+        "createdAt": "2026-11-11T21:42:11.220661Z",
+        "updatedAt": "2026-11-11T21:42:11.223119Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": null
+      },
+      {
+        "id": 36,
+        "title": "Suspicious phishing email",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "PHISHING",
+        "priority": "CRITICAL",
+        "status": "OPEN",
+        "createdAt": "2026-11-11T21:42:11.150069Z",
+        "updatedAt": "2026-11-11T21:42:11.185256Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": null
+      },
+      {
+        "id": 6,
+        "title": "Account access blocked",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "ACCESS",
+        "priority": "HIGH",
+        "status": "OPEN",
+        "createdAt": "2026-11-10T22:39:43.692757Z",
+        "updatedAt": "2026-11-10T22:39:43.695452Z",
+        "createdBy": {
+          "id": 2,
+          "fullName": "Employee Two",
+          "email": "employee2@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.995895Z"
+        },
+        "assignedTo": null
+      },
+      {
+        "id": 5,
+        "title": "Office Wi-Fi connection failure",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "NETWORK",
+        "priority": "MEDIUM",
+        "status": "CLOSED",
+        "createdAt": "2026-11-10T22:39:43.670312Z",
+        "updatedAt": "2026-11-10T22:39:44.103079Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": null
+      },
+      {
+        "id": 4,
+        "title": "Suspicious phishing email",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "PHISHING",
+        "priority": "CRITICAL",
+        "status": "RESOLVED",
+        "createdAt": "2026-11-10T22:39:43.572921Z",
+        "updatedAt": "2026-11-10T22:39:44.030940Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": {
+          "id": 3,
+          "fullName": "Technician A",
+          "email": "tech@demo.test",
+          "role": "TECHNICIAN",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:06.071471Z"
+        }
+      },
+      {
+        "id": 3,
+        "title": "Account access blocked",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "ACCESS",
+        "priority": "HIGH",
+        "status": "OPEN",
+        "createdAt": "2026-11-10T22:38:49.728286Z",
+        "updatedAt": "2026-11-10T22:38:49.730860Z",
+        "createdBy": {
+          "id": 2,
+          "fullName": "Employee Two",
+          "email": "employee2@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.995895Z"
+        },
+        "assignedTo": null
+      },
+      {
+        "id": 2,
+        "title": "Office Wi-Fi connection failure",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "NETWORK",
+        "priority": "MEDIUM",
+        "status": "OPEN",
+        "createdAt": "2026-11-10T22:38:49.710373Z",
+        "updatedAt": "2026-11-10T22:38:49.712770Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": null
+      },
+      {
+        "id": 1,
+        "title": "Suspicious phishing email",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "PHISHING",
+        "priority": "CRITICAL",
+        "status": "IN_PROGRESS",
+        "createdAt": "2026-11-10T22:38:49.612759Z",
+        "updatedAt": "2026-11-11T08:08:08.422591Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": {
+          "id": 3,
+          "fullName": "Technician A",
+          "email": "tech@demo.test",
+          "role": "TECHNICIAN",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:06.071471Z"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Employee cannot assign",
+    "method": "PUT",
+    "path": "/api/incidents/36/assign/3",
+    "expected": 403,
+    "actual": 403,
+    "pass": true,
+    "response": {
+      "status": 403,
+      "message": "Access forbidden"
+    }
+  },
+  {
+    "name": "Admin assignment",
+    "method": "PUT",
+    "path": "/api/incidents/36/assign/3",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "id": 36,
+      "title": "Suspicious phishing email",
+      "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+      "category": "PHISHING",
+      "priority": "CRITICAL",
+      "status": "ASSIGNED",
+      "createdAt": "2026-11-11T21:42:11.150069Z",
+      "updatedAt": "2026-11-11T21:42:11.421031842Z",
+      "createdBy": {
+        "id": 1,
+        "fullName": "Employee One",
+        "email": "employee1@demo.test",
+        "role": "EMPLOYEE",
+        "enabled": true,
+        "createdAt": "2026-11-10T22:36:05.854714Z"
+      },
+      "assignedTo": {
+        "id": 3,
+        "fullName": "Technician A",
+        "email": "tech@demo.test",
+        "role": "TECHNICIAN",
+        "enabled": true,
+        "createdAt": "2026-11-10T22:36:06.071471Z"
+      }
+    }
+  },
+  {
+    "name": "Technician assigned list",
+    "method": "GET",
+    "path": "/api/incidents/assigned",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": [
+      {
+        "id": 36,
+        "title": "Suspicious phishing email",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "PHISHING",
+        "priority": "CRITICAL",
+        "status": "ASSIGNED",
+        "createdAt": "2026-11-11T21:42:11.150069Z",
+        "updatedAt": "2026-11-11T21:42:11.421032Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": {
+          "id": 3,
+          "fullName": "Technician A",
+          "email": "tech@demo.test",
+          "role": "TECHNICIAN",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:06.071471Z"
+        }
+      },
+      {
+        "id": 4,
+        "title": "Suspicious phishing email",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "PHISHING",
+        "priority": "CRITICAL",
+        "status": "RESOLVED",
+        "createdAt": "2026-11-10T22:39:43.572921Z",
+        "updatedAt": "2026-11-10T22:39:44.030940Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": {
+          "id": 3,
+          "fullName": "Technician A",
+          "email": "tech@demo.test",
+          "role": "TECHNICIAN",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:06.071471Z"
+        }
+      },
+      {
+        "id": 1,
+        "title": "Suspicious phishing email",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "PHISHING",
+        "priority": "CRITICAL",
+        "status": "IN_PROGRESS",
+        "createdAt": "2026-11-10T22:38:49.612759Z",
+        "updatedAt": "2026-11-11T08:08:08.422591Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": {
+          "id": 3,
+          "fullName": "Technician A",
+          "email": "tech@demo.test",
+          "role": "TECHNICIAN",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:06.071471Z"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Start treatment",
+    "method": "PUT",
+    "path": "/api/incidents/36/status",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "id": 36,
+      "title": "Suspicious phishing email",
+      "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+      "category": "PHISHING",
+      "priority": "CRITICAL",
+      "status": "IN_PROGRESS",
+      "createdAt": "2026-11-11T21:42:11.150069Z",
+      "updatedAt": "2026-11-11T21:42:11.460395885Z",
+      "createdBy": {
+        "id": 1,
+        "fullName": "Employee One",
+        "email": "employee1@demo.test",
+        "role": "EMPLOYEE",
+        "enabled": true,
+        "createdAt": "2026-11-10T22:36:05.854714Z"
+      },
+      "assignedTo": {
+        "id": 3,
+        "fullName": "Technician A",
+        "email": "tech@demo.test",
+        "role": "TECHNICIAN",
+        "enabled": true,
+        "createdAt": "2026-11-10T22:36:06.071471Z"
+      }
+    }
+  },
+  {
+    "name": "Add treatment note",
+    "method": "POST",
+    "path": "/api/incidents/36/comments",
+    "expected": 201,
+    "actual": 201,
+    "pass": true,
+    "response": {
+      "id": 33,
+      "content": "Le poste a ete isole du reseau. Analyse antivirus effectuee. Le message de phishing a ete supprime.",
+      "author": "Technician A",
+      "createdAt": "2026-11-11T21:42:11.477905930Z"
+    }
+  },
+  {
+    "name": "Resolve incident",
+    "method": "PUT",
+    "path": "/api/incidents/36/status",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "id": 36,
+      "title": "Suspicious phishing email",
+      "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+      "category": "PHISHING",
+      "priority": "CRITICAL",
+      "status": "RESOLVED",
+      "createdAt": "2026-11-11T21:42:11.150069Z",
+      "updatedAt": "2026-11-11T21:42:11.494991357Z",
+      "createdBy": {
+        "id": 1,
+        "fullName": "Employee One",
+        "email": "employee1@demo.test",
+        "role": "EMPLOYEE",
+        "enabled": true,
+        "createdAt": "2026-11-10T22:36:05.854714Z"
+      },
+      "assignedTo": {
+        "id": 3,
+        "fullName": "Technician A",
+        "email": "tech@demo.test",
+        "role": "TECHNICIAN",
+        "enabled": true,
+        "createdAt": "2026-11-10T22:36:06.071471Z"
+      }
+    }
+  },
+  {
+    "name": "Owner sees state and history",
+    "method": "GET",
+    "path": "/api/incidents/36",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "comments": [
+        {
+          "id": 33,
+          "content": "Le poste a ete isole du reseau. Analyse antivirus effectuee. Le message de phishing a ete supprime.",
+          "author": "Technician A",
+          "createdAt": "2026-11-11T21:42:11.477906Z"
+        }
+      ],
+      "incident": {
+        "id": 36,
+        "title": "Suspicious phishing email",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "PHISHING",
+        "priority": "CRITICAL",
+        "status": "RESOLVED",
+        "createdAt": "2026-11-11T21:42:11.150069Z",
+        "updatedAt": "2026-11-11T21:42:11.494991Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": {
+          "id": 3,
+          "fullName": "Technician A",
+          "email": "tech@demo.test",
+          "role": "TECHNICIAN",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:06.071471Z"
+        }
+      },
+      "history": [
+        {
+          "id": 36,
+          "event": "Incident created",
+          "author": "Employee One",
+          "createdAt": "2026-11-11T21:42:11.182727Z"
+        },
+        {
+          "id": 39,
+          "event": "Assigned to Technician A (OPEN -> ASSIGNED)",
+          "author": "Administrator",
+          "createdAt": "2026-11-11T21:42:11.419809Z"
+        },
+        {
+          "id": 40,
+          "event": "ASSIGNED -> IN_PROGRESS",
+          "author": "Technician A",
+          "createdAt": "2026-11-11T21:42:11.459337Z"
+        },
+        {
+          "id": 41,
+          "event": "Treatment note added",
+          "author": "Technician A",
+          "createdAt": "2026-11-11T21:42:11.479790Z"
+        },
+        {
+          "id": 42,
+          "event": "IN_PROGRESS -> RESOLVED",
+          "author": "Technician A",
+          "createdAt": "2026-11-11T21:42:11.493935Z"
+        }
+      ]
+    }
+  },
+  {
+    "name": "Employee list isolation",
+    "method": "GET",
+    "path": "/api/incidents/my",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": [
+      {
+        "id": 37,
+        "title": "Office Wi-Fi connection failure",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "NETWORK",
+        "priority": "MEDIUM",
+        "status": "OPEN",
+        "createdAt": "2026-11-11T21:42:11.220661Z",
+        "updatedAt": "2026-11-11T21:42:11.223119Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": null
+      },
+      {
+        "id": 36,
+        "title": "Suspicious phishing email",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "PHISHING",
+        "priority": "CRITICAL",
+        "status": "RESOLVED",
+        "createdAt": "2026-11-11T21:42:11.150069Z",
+        "updatedAt": "2026-11-11T21:42:11.494991Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": {
+          "id": 3,
+          "fullName": "Technician A",
+          "email": "tech@demo.test",
+          "role": "TECHNICIAN",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:06.071471Z"
+        }
+      },
+      {
+        "id": 5,
+        "title": "Office Wi-Fi connection failure",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "NETWORK",
+        "priority": "MEDIUM",
+        "status": "CLOSED",
+        "createdAt": "2026-11-10T22:39:43.670312Z",
+        "updatedAt": "2026-11-10T22:39:44.103079Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": null
+      },
+      {
+        "id": 4,
+        "title": "Suspicious phishing email",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "PHISHING",
+        "priority": "CRITICAL",
+        "status": "RESOLVED",
+        "createdAt": "2026-11-10T22:39:43.572921Z",
+        "updatedAt": "2026-11-10T22:39:44.030940Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": {
+          "id": 3,
+          "fullName": "Technician A",
+          "email": "tech@demo.test",
+          "role": "TECHNICIAN",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:06.071471Z"
+        }
+      },
+      {
+        "id": 2,
+        "title": "Office Wi-Fi connection failure",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "NETWORK",
+        "priority": "MEDIUM",
+        "status": "OPEN",
+        "createdAt": "2026-11-10T22:38:49.710373Z",
+        "updatedAt": "2026-11-10T22:38:49.712770Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": null
+      },
+      {
+        "id": 1,
+        "title": "Suspicious phishing email",
+        "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+        "category": "PHISHING",
+        "priority": "CRITICAL",
+        "status": "IN_PROGRESS",
+        "createdAt": "2026-11-10T22:38:49.612759Z",
+        "updatedAt": "2026-11-11T08:08:08.422591Z",
+        "createdBy": {
+          "id": 1,
+          "fullName": "Employee One",
+          "email": "employee1@demo.test",
+          "role": "EMPLOYEE",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:05.854714Z"
+        },
+        "assignedTo": {
+          "id": 3,
+          "fullName": "Technician A",
+          "email": "tech@demo.test",
+          "role": "TECHNICIAN",
+          "enabled": true,
+          "createdAt": "2026-11-10T22:36:06.071471Z"
+        }
+      }
+    ]
+  },
+  {
+    "name": "Close incident",
+    "method": "PUT",
+    "path": "/api/incidents/37/status",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "id": 37,
+      "title": "Office Wi-Fi connection failure",
+      "description": "Classroom demonstration: investigate, document the action, and verify resolution.",
+      "category": "NETWORK",
+      "priority": "MEDIUM",
+      "status": "CLOSED",
+      "createdAt": "2026-11-11T21:42:11.220661Z",
+      "updatedAt": "2026-11-11T21:42:11.546216981Z",
+      "createdBy": {
+        "id": 1,
+        "fullName": "Employee One",
+        "email": "employee1@demo.test",
+        "role": "EMPLOYEE",
+        "enabled": true,
+        "createdAt": "2026-11-10T22:36:05.854714Z"
+      },
+      "assignedTo": null
+    }
+  },
+  {
+    "name": "Closed incident locked",
+    "method": "PUT",
+    "path": "/api/incidents/37/status",
+    "expected": 409,
+    "actual": 409,
+    "pass": true,
+    "response": {
+      "status": 409,
+      "message": "Closed incidents cannot be changed"
+    }
+  },
+  {
+    "name": "Unknown incident",
+    "method": "GET",
+    "path": "/api/incidents/99999999",
+    "expected": 404,
+    "actual": 404,
+    "pass": true,
+    "response": {
+      "status": 404,
+      "message": "Incident not found"
+    }
+  },
+  {
+    "name": "Admin statistics",
+    "method": "GET",
+    "path": "/api/admin/statistics",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "users": 5,
+      "employees": 3,
+      "technicians": 1,
+      "incidents": 9,
+      "OPEN": 4,
+      "ASSIGNED": 0,
+      "IN_PROGRESS": 1,
+      "RESOLVED": 2,
+      "CLOSED": 2
+    }
+  },
+  {
+    "name": "Registration ignores requested ADMIN role",
+    "method": "POST",
+    "path": "/auth/register",
+    "expected": 201,
+    "actual": 201,
+    "pass": true,
+    "response": {
+      "message": "Token received (redacted)"
+    }
+  },
+  {
+    "name": "Wrong current password",
+    "method": "PUT",
+    "path": "/api/profile/password",
+    "expected": 400,
+    "actual": 400,
+    "pass": true,
+    "response": {
+      "status": 400,
+      "message": "Old password is incorrect"
+    }
+  },
+  {
+    "name": "Password confirmation mismatch",
+    "method": "PUT",
+    "path": "/api/profile/password",
+    "expected": 400,
+    "actual": 400,
+    "pass": true,
+    "response": {
+      "status": 400,
+      "message": "Passwords do not match"
+    }
+  },
+  {
+    "name": "Change password",
+    "method": "PUT",
+    "path": "/api/profile/password",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "message": "Password changed"
+    }
+  },
+  {
+    "name": "Old password rejected",
+    "method": "POST",
+    "path": "/auth/login",
+    "expected": 401,
+    "actual": 401,
+    "pass": true,
+    "response": {
+      "status": 401,
+      "message": "Invalid credentials or disabled account"
+    }
+  },
+  {
+    "name": "New password accepted",
+    "method": "POST",
+    "path": "/auth/login",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "message": "Token received (redacted)"
+    }
+  },
+  {
+    "name": "Update name and email",
+    "method": "PUT",
+    "path": "/api/profile",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "role": "EMPLOYEE",
+      "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cGRhdGVkLXJlZ2lzdHJhdGlvbi0xNzk0NDMzMzMxQGRlbW8udGVzdCIsInJvbGUiOiJFTVBMT1lFRSIsImlhdCI6MTc5NDQzMzMzMiwiZXhwIjoxNzk0NDMzNjMyfQ.La4QaC-rOH9n-UOwM_dYHS6BtDrbO-qIGFzSxz7jOec",
+      "fullName": "Updated Test Employee",
+      "user": {
+        "id": 37,
+        "fullName": "Updated Test Employee",
+        "email": "updated-registration-1794433331@demo.test",
+        "role": "EMPLOYEE",
+        "enabled": true,
+        "createdAt": "2026-11-11T21:42:11.601414Z"
+      }
+    }
+  },
+  {
+    "name": "Profile refreshed token",
+    "method": "GET",
+    "path": "/api/profile",
+    "expected": 200,
+    "actual": 200,
+    "pass": true,
+    "response": {
+      "id": 37,
+      "fullName": "Updated Test Employee",
+      "email": "updated-registration-1794433331@demo.test",
+      "role": "EMPLOYEE",
+      "enabled": true,
+      "createdAt": "2026-11-11T21:42:11.601414Z"
+    }
+  }
+]
