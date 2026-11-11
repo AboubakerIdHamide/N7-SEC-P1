@@ -1,0 +1,1 @@
+import React from 'react';import {Navigate,Outlet} from 'react-router-dom';import {session} from '../services/api';export default function RoleRoute({roles}){return roles.includes(session()?.role)?<Outlet/>:<Navigate to='/dashboard' replace/>}

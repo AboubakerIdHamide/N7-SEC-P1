@@ -1,0 +1,1 @@
+import api from './api'; export const listIncidents=role=>api.get('/api/incidents'+(role==='EMPLOYEE'?'/my':role==='TECHNICIAN'?'/assigned':'')); export const getIncident=id=>api.get('/api/incidents/'+id); export const createIncident=data=>api.post('/api/incidents',data);

@@ -1,0 +1,1 @@
+import React from 'react';import {Navigate,Outlet} from 'react-router-dom';import {session} from '../services/api';export default function ProtectedRoute(){return session()?.token?<Outlet/>:<Navigate to='/login' replace/>}
