@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg
+  PUBLIC '-//W3C//DTD SVG 1.0//EN'
+  'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg width="800" height="580" preserveAspectRatio="xMinYMin meet" viewBox="0 0 800 580" xmlns="http://www.w3.org/2000/svg" version="1.0" fill-rule="evenodd" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<title>...</title>
+	<desc>...</desc>
+	<clipPath id="clip">
+		<rect x="0" y="0" width="800" height="580"/>
+	</clipPath>
+	<g id="group" transform="scale(1,-1) translate(0,-580)" style="clip-path: url(#clip)">
+		<g transform="">
+			<rect x="20" y="300" width="265" height="250" rx="8" ry="0" style="stroke: rgb(78%,85%,84%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<rect x="20" y="516" width="265" height="34" style="stroke: rgb(9%,22%,24%); stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,22%,24%); fill-rule: evenodd;"/>
+			<text x="33" y="527" style="font-family: Helvetica-Bold; font-size: 13px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,1054) scale(1,-1)">AppUser</text>
+			<text x="33" y="496" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,992) scale(1,-1)">id : Long (PK)</text>
+			<text x="33" y="478" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,956) scale(1,-1)">fullName : String</text>
+			<text x="33" y="460" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,920) scale(1,-1)">email : String (unique)</text>
+			<text x="33" y="442" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,884) scale(1,-1)">password : BCrypt hash</text>
+			<text x="33" y="424" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,848) scale(1,-1)">role : EMPLOYEE / TECHNICIAN / ADMIN</text>
+			<text x="33" y="406" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,812) scale(1,-1)">enabled : boolean</text>
+			<text x="33" y="388" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,776) scale(1,-1)">createdAt : Instant</text>
+			<rect x="470" y="280" width="310" height="270" rx="8" ry="0" style="stroke: rgb(78%,85%,84%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<rect x="470" y="516" width="310" height="34" style="stroke: rgb(9%,22%,24%); stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,22%,24%); fill-rule: evenodd;"/>
+			<text x="483" y="527" style="font-family: Helvetica-Bold; font-size: 13px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,1054) scale(1,-1)">Incident</text>
+			<text x="483" y="496" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,992) scale(1,-1)">id : Long (PK)</text>
+			<text x="483" y="478" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,956) scale(1,-1)">title / description : String</text>
+			<text x="483" y="460" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,920) scale(1,-1)">category / priority / status : enum</text>
+			<text x="483" y="442" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,884) scale(1,-1)">createdAt / updatedAt : Instant</text>
+			<text x="483" y="424" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,848) scale(1,-1)">createdBy : AppUser (required FK)</text>
+			<text x="483" y="406" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,812) scale(1,-1)">assignedTo : AppUser (optional FK)</text>
+			<rect x="20" y="20" width="310" height="170" rx="8" ry="0" style="stroke: rgb(78%,85%,84%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<rect x="20" y="156" width="310" height="34" style="stroke: rgb(9%,22%,24%); stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,22%,24%); fill-rule: evenodd;"/>
+			<text x="33" y="167" style="font-family: Helvetica-Bold; font-size: 13px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,334) scale(1,-1)">IncidentHistory</text>
+			<text x="33" y="136" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,272) scale(1,-1)">id : Long (PK)</text>
+			<text x="33" y="118" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,236) scale(1,-1)">incident : Incident (required FK)</text>
+			<text x="33" y="100" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,200) scale(1,-1)">author : AppUser (required FK)</text>
+			<text x="33" y="82" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,164) scale(1,-1)">event : String</text>
+			<text x="33" y="64" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,128) scale(1,-1)">createdAt : Instant</text>
+			<rect x="470" y="20" width="310" height="170" rx="8" ry="0" style="stroke: rgb(78%,85%,84%); stroke-linecap: butt; stroke-width: 1; fill: rgb(100%,100%,100%); fill-rule: evenodd;"/>
+			<rect x="470" y="156" width="310" height="34" style="stroke: rgb(9%,22%,24%); stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,22%,24%); fill-rule: evenodd;"/>
+			<text x="483" y="167" style="font-family: Helvetica-Bold; font-size: 13px;fill: rgb(100%,100%,100%); stroke:none;" transform="translate(0,334) scale(1,-1)">IncidentComment</text>
+			<text x="483" y="136" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,272) scale(1,-1)">id : Long (PK)</text>
+			<text x="483" y="118" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,236) scale(1,-1)">incident : Incident (required FK)</text>
+			<text x="483" y="100" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,200) scale(1,-1)">author : AppUser (required FK)</text>
+			<text x="483" y="82" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,164) scale(1,-1)">content : String</text>
+			<text x="483" y="64" style="font-family: Helvetica; font-size: 11px;fill: rgb(9%,22%,24%); stroke:none;" transform="translate(0,128) scale(1,-1)">createdAt : Instant</text>
+			<path d="M 470,470 L 285,470 Z" style="stroke: rgb(9%,47%,43%); stroke-linecap: butt; stroke-width: 1.5;"/>
+			<polygon points="285 470, 291.4474 467.2741, 291.4474 472.7259" style="stroke: rgb(9%,47%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,47%,43%); fill-rule: evenodd;"/>
+			<text x="327.95" y="483" style="font-family: Helvetica; font-size: 10px;fill: rgb(37%,46%,49%); stroke:none;" transform="translate(0,966) scale(1,-1)">createdBy : many -&gt; 1</text>
+			<path d="M 470,420 L 285,420 Z" style="stroke: rgb(9%,47%,43%); stroke-linecap: butt; stroke-width: 1.5;"/>
+			<polygon points="285 420, 291.4474 417.2741, 291.4474 422.7259" style="stroke: rgb(9%,47%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,47%,43%); fill-rule: evenodd;"/>
+			<text x="319.055" y="433" style="font-family: Helvetica; font-size: 10px;fill: rgb(37%,46%,49%); stroke:none;" transform="translate(0,866) scale(1,-1)">assignedTo : many -&gt; 0..1</text>
+			<path d="M 170,190 L 170,300 Z" style="stroke: rgb(9%,47%,43%); stroke-linecap: butt; stroke-width: 1.5;"/>
+			<polygon points="170 300, 167.2741 293.5526, 172.7259 293.5526" style="stroke: rgb(9%,47%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,47%,43%); fill-rule: evenodd;"/>
+			<text x="129.285" y="235" style="font-family: Helvetica; font-size: 10px;fill: rgb(37%,46%,49%); stroke:none;" transform="translate(0,470) scale(1,-1)">author : many -&gt; 1</text>
+			<path d="M 620,190 L 620,280 Z" style="stroke: rgb(9%,47%,43%); stroke-linecap: butt; stroke-width: 1.5;"/>
+			<polygon points="620 280, 617.2741 273.5526, 622.7259 273.5526" style="stroke: rgb(9%,47%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,47%,43%); fill-rule: evenodd;"/>
+			<text x="576.23" y="225" style="font-family: Helvetica; font-size: 10px;fill: rgb(37%,46%,49%); stroke:none;" transform="translate(0,450) scale(1,-1)">incident : many -&gt; 1</text>
+			<path d="M 330,140 L 485,280 Z" style="stroke: rgb(9%,47%,43%); stroke-linecap: butt; stroke-width: 1.5;"/>
+			<polygon points="485 280, 478.3882 277.7013, 482.0425 273.6555" style="stroke: rgb(9%,47%,43%); stroke-linecap: butt; stroke-width: 1; fill: rgb(9%,47%,43%); fill-rule: evenodd;"/>
+			<text x="339.23" y="185" style="font-family: Helvetica; font-size: 10px;fill: rgb(37%,46%,49%); stroke:none;" transform="translate(0,370) scale(1,-1)">incident : many -&gt; 1</text>
+			<text x="190.82999999999998" y="5" style="font-family: Helvetica; font-size: 10px;fill: rgb(37%,46%,49%); stroke:none;" transform="translate(0,10) scale(1,-1)">Comment.author also references AppUser (many -&gt; 1). All links use @ManyToOne LAZY.</text>
+		</g>
+	</g>
+</svg>

@@ -1,0 +1,9 @@
+flowchart TD
+    R[React :5173 - Login / Dashboard / Incidents / Users] --> G[ProtectedRoute + RoleRoute]
+    G --> A[Axios interceptors - Bearer JWT / 401 handling]
+    A -->|HTTP JSON + Authorization| S[Spring Boot :8080 - SecurityFilterChain]
+    S --> J[JwtFilter - signature / expiration / enabled account]
+    J --> C[REST controllers - DTO validation / role checks]
+    C --> B[IncidentService - ownership / assignment / history]
+    B --> P[JPA repositories]
+    P --> D[(H2 persistent database)]

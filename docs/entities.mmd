@@ -1,0 +1,42 @@
+erDiagram
+    AppUser ||--o{ Incident : "createdBy"
+    AppUser o|--o{ Incident : "assignedTo"
+    Incident ||--o{ IncidentHistory : "history"
+    Incident ||--o{ IncidentComment : "comments"
+    AppUser ||--o{ IncidentHistory : "author"
+    AppUser ||--o{ IncidentComment : "author"
+    AppUser {
+        Long id PK
+        String fullName
+        String email UK
+        String passwordHash
+        Role role
+        boolean enabled
+        Instant createdAt
+    }
+    Incident {
+        Long id PK
+        String title
+        String description
+        Category category
+        Priority priority
+        Status status
+        Instant createdAt
+        Instant updatedAt
+        Long createdBy FK
+        Long assignedTo FK
+    }
+    IncidentHistory {
+        Long id PK
+        Long incident FK
+        Long author FK
+        String event
+        Instant createdAt
+    }
+    IncidentComment {
+        Long id PK
+        Long incident FK
+        Long author FK
+        String content
+        Instant createdAt
+    }
